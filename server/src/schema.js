@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-express';
+import { find } from 'lodash';
 
-const people = [
+const allPeople_data = [
     {
         id: '1',
         firstName: 'Bill',
@@ -18,7 +19,7 @@ const people = [
     }
 ]
 
-const cars = [
+const allCars_data = [
     {
         id: '1',
         year: '2019',
@@ -96,31 +97,91 @@ const cars = [
 const typeDefs = gql`
     type People {
         id: String!
-        firstName: String!
-        lastName: String!
+        firstName: String
+        lastName: String
     }
 
     type Car {
         id: String!
-        year: String!
-        make: String!
-        model: String!
-        price: String!
-        personId: String!
+        year: String
+        make: String
+        model: String
+        price: String
+        personId: String
     }
 
     type Query {
-        allPeople: [People!]!
-        people(id: String!): People
+        allPeople: [People]
+        people(id: String): People
+    
+        allCars: [Car]
+        car(id: String): Car
+    }
+
+    type Mutation {
+        addPeople(id: String!, firstName: String!, lastName: String!): People,
+        removePeople(id: String!, firstName: String!, lastName: String!): People,
         
-        allCar: [Car!]!
-        car(id: String!): Car
+        addCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Car,
+        removeCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Car,
     }
 `
 
 const resolvers = {
     Query: {
-        people: () => people
+        allPeople: () => allPeople_data,
+        people(parent, args, context, info) {
+            return find(allPeople_data, { id: args.id })
+        },
+        allCars: () => allCars_data,
+        car(parent, args, context, info) {
+            return find(allCars_data, { id: args.id })
+        },
+    },
+    Mutation: {
+        addPeople: (root, args) => {
+            const newPeople = {
+                id: args.id,
+                firstName: args.firstName,
+                lastName: args.lastName
+            }
+            allPeople_data.push(newPeople)
+            return newPeople
+        },
+        removePeople: (root, args) => {
+            const peopleWillBeRemoved = {
+                id: args.id,
+                firstName: args.firstName,
+                lastName: args.lastName
+            }
+            allPeople_data.pop(peopleWillBeRemoved)
+            return peopleWillBeRemoved
+        },
+
+        addCar: (root, args) => {
+            const newCar = {
+                id: args.id,
+                year: args.year,
+                make: args.make,
+                model: args.model,
+                price: args.price,
+                personId: args.personId
+            }
+            allCars_data.push(newCar)
+            return newCar
+        },
+        removeCar: (root, args) => {
+            const carWillBeRemoved = {
+                id: args.id,
+                year: args.year,
+                make: args.make,
+                model: args.model,
+                price: args.price,
+                personId: args.personId
+            }
+            allCars_data.pop(carWillBeRemoved)
+            return carWillBeRemoved
+        }
     }
 }
 
