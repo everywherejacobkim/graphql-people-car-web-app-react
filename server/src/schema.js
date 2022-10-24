@@ -1,5 +1,5 @@
 import { gql } from 'apollo-server-express';
-import { find } from 'lodash';
+import { find, remove } from 'lodash';
 
 const allPeople_data = [
     {
@@ -120,10 +120,12 @@ const typeDefs = gql`
 
     type Mutation {
         addPeople(id: String!, firstName: String!, lastName: String!): People,
-        removePeople(id: String!, firstName: String!, lastName: String!): People,
+        removePeople(id: String!): People,
+        updatePeople(id: String!, firstName: String, lastName: String): People,
         
         addCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Car,
         removeCar(id: String!, year: String!, make: String!, model: String!, price: String!, personId: String!): Car,
+        updateCar(id: String!, year: String, make: String, model: String, price: String, personId: String): Car,
     }
 `
 
@@ -149,13 +151,22 @@ const resolvers = {
             return newPeople
         },
         removePeople: (root, args) => {
-            const peopleWillBeRemoved = {
-                id: args.id,
-                firstName: args.firstName,
-                lastName: args.lastName
+            const peopleWillBeRemoved = find(allPeople_data, { id: args.id })
+            if (!peopleWillBeRemoved) {
+                throw new Error(`Couldn't find people with id ${args.id}`)
             }
-            allPeople_data.pop(peopleWillBeRemoved)
+            remove(allPeople_data, people => {
+                return people.id === peopleWillBeRemoved.id
+            })
             return peopleWillBeRemoved
+        },
+        updatePeople: (root, args) => {
+            const people = find(allPeople_data, { id: args.id })
+            if (!people) {
+                throw new Error(`Couldn't find people with id ${args.id}`)
+            }
+            people.firstName = args.firstName
+            people.lastName = args.lastName
         },
 
         addCar: (root, args) => {
@@ -171,17 +182,27 @@ const resolvers = {
             return newCar
         },
         removeCar: (root, args) => {
-            const carWillBeRemoved = {
-                id: args.id,
-                year: args.year,
-                make: args.make,
-                model: args.model,
-                price: args.price,
-                personId: args.personId
+            const carWillBeRemoved = find(allCars_data, { id: args.id })
+            if (!carWillBeRemoved) {
+                throw new Error(`Couldn't find car with id ${args.id}`)
             }
-            allCars_data.pop(carWillBeRemoved)
+            remove(allCars_data, car => {
+                return car.id === carWillBeRemoved.id
+            })
             return carWillBeRemoved
-        }
+        },
+        updateCar: (root, args) => {
+            const car = find(allCars_data, { id: args.id })
+            if (!car) {
+                throw new Error(`Couldn't find car with id ${args.id}`)
+            }
+            car.firstName = args.firstName,
+            car.year = args.year,
+            car.make = args.make,
+            car.model = args.model,
+            car.price = args.price,
+            car.personId = args.personId
+        },
     }
 }
 
