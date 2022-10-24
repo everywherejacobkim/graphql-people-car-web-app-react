@@ -10,5 +10,25 @@ export const GET_ALL_PEOPLE = gql`
 }
 `;
 
+export const GET_ALL_CARS = gql`
+    query GetAllCars {
+        allCars {
+        id
+        year
+        make
+        model
+        price
+        personId
+    }
+}
+`;
 
-
+export const UPDATE_PEOPLE = gql`
+    mutation UpdatePeople($id: ID!, $firstName: String!, $lastName: String!) {
+        updatePeople(id: $id, firstName: $firstName, lastName: $lastName) {
+            id
+            firstName
+            lastName
+        }
+    }
+`

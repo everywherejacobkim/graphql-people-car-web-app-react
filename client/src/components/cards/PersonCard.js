@@ -1,6 +1,7 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_PEOPLE } from '../../queries';
+import { List } from 'antd';
 
 const PersonCard = () => {
 
@@ -12,7 +13,15 @@ const PersonCard = () => {
 
 
   return (
-      <div>PersonCard</div>
+    <List>
+      {
+        data.allPeople.map(({id, firstName, lastName}) => (
+            <List.Item key={id}>
+              <h3>{firstName} {lastName}</h3>
+            </List.Item>
+        ))
+      }
+    </List>
   )
 }
 
