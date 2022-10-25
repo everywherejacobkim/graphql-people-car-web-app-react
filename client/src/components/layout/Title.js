@@ -8,7 +8,7 @@ const getStyles = () => ({
 
 const Title = () => {
     const styles = getStyles()
-    return <h1 style={styles.title}>Hey this is Form!</h1>
+    return <h1 style={styles.title}>PEOPLE & CARS</h1>
 }
 
 export default Title
