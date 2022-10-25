@@ -1,7 +1,8 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_PEOPLE } from '../../queries';
-import { List } from 'antd';
+import { Card } from 'antd';
+import CarCard from './CarCard';
 
 const PersonCard = () => {
 
@@ -9,22 +10,19 @@ const PersonCard = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return `Error... ${error.message}`;
 
-  console.log('all People Data', data.allPeople);
-
-
   return (
-    <List>
-      {
-        data.allPeople.map(({id, firstName, lastName}) => (
-            <List.Item key={id}>
-              <h3>{firstName} {lastName}</h3>
-            </List.Item>
-        ))
-      }
-    </List>
+    data.allPeople.map(({ id, firstName, lastName }) => (
+      <Card title={firstName + ' ' + lastName} style={{marginTop: 40, width: 940}}>
+
+        <CarCard />
+
+      </Card>
+      ))
   )
 }
 
 
-
 export default PersonCard
+
+
+
