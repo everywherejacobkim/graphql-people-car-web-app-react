@@ -12,7 +12,7 @@ const PersonCard = () => {
 
   return (
     data.allPeople.map(({ id, firstName, lastName }) => (
-      <Card title={firstName + ' ' + lastName} style={{marginTop: 40, width: 940}}>
+      <Card key={id} title={firstName + ' ' + lastName} style={{marginTop: 40, width: 940}}>
 
         <CarCard />
 

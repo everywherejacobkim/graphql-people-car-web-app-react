@@ -12,7 +12,7 @@ const CarCard = () => {
 
     return (
         data.allCars.map(({ id, year, make, model, price }) => (
-        <Card title={year + ' ' + make + ' ' + model + ' -> $'+ price}>
+        <Card key={id} title={year + ' ' + make + ' ' + model + ' -> $'+ price}>
                 <div style={{ display: 'flex', justifyContent:'space-around'}}>
                 <EditOutlined />   
                 <DeleteOutlined />
