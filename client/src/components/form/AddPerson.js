@@ -2,13 +2,13 @@ import React, {useState, useEffect} from 'react';
 import { Form, Input, Button, Card } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import { useMutation } from '@apollo/client';
-import { ADD_PEOPLE } from '../../queries';
+import { ADD_PEOPLE, GET_PEOPLE } from '../../queries';
 import { UserAddOutlined } from '@ant-design/icons';
 
 
-const PersonForm = () => {
+const AddPerson = () => {
 
-    const [id] = useState(uuidv4());
+    const [id, setId] = useState(uuidv4());
     const [addPeople] = useMutation(ADD_PEOPLE);
 
     const [form] = Form.useForm();
@@ -20,12 +20,17 @@ const PersonForm = () => {
 
     const onFinish = (values) => {
         const { firstName, lastName } = values;
-        
+        setId(uuidv4());
+
         addPeople({
             variables: {
                 id,
                 firstName,
                 lastName
+            },
+            update: (proxy, { data: { addPerson } }) => {
+                const data = proxy.readQuery({ query: GET_PEOPLE });
+                proxy.writeQuery({ query: GET_PEOPLE, data: { ...data, people: [...data.people, addPerson] } });
             }
         })
     }
@@ -51,4 +56,4 @@ const PersonForm = () => {
     )
 }
 
-export default PersonForm
+export default AddPerson

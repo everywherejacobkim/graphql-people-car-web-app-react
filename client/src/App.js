@@ -1,21 +1,18 @@
 import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import Title from "./components/layout/Title";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
-import PersonForm from './components/form/PersonForm';
-import PersonCard from "./components/cards/PersonCard";
-import CarForm from "./components/form/CarForm";
-
+import Home from "./pages/Home";
+import Detail from "./pages/Detail";
 
 function App() {
   return (
     <div className="App">
-      <Title />
-      <div style={{ display: 'flex', gap: 40 }}>
-        <PersonForm />
-        <CarForm />
-      </div>
-      <PersonCard />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} exact/>
+          <Route path="/people" element={<Detail />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { useMutation } from '@apollo/client';
 import { ADD_CAR } from '../../queries';
 import { CarOutlined } from '@ant-design/icons';
 
-const CarForm = () => {
+const AddCar = () => {
 
     const [id] = useState(uuidv4());
     const [addCar] = useMutation(ADD_CAR);
@@ -95,4 +95,4 @@ const CarForm = () => {
     )
 }
 
-export default CarForm
+export default AddCar

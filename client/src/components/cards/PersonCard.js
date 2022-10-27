@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_PEOPLE } from '../../queries';
 import { Card } from 'antd';
 import CarCard from './CarCard';
+import DeletePerson from '../buttons/DeletePerson';
 
 const PersonCard = () => {
 
@@ -12,10 +13,8 @@ const PersonCard = () => {
 
   return (
     data.allPeople.map(({ id, firstName, lastName }) => (
-      <Card key={id} title={firstName + ' ' + lastName} style={{marginTop: 40, width: 940}}>
-
+      <Card key={id} title={firstName + ' ' + lastName} style={{marginTop: 40, width: 940}} cover={<DeletePerson/>}>
         <CarCard />
-
       </Card>
       ))
   )

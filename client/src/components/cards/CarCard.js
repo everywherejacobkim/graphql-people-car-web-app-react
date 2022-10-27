@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client';
 import { GET_ALL_CARS } from '../../queries';
 import { Card } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 const CarCard = () => {
 
@@ -14,7 +15,9 @@ const CarCard = () => {
         data.allCars.map(({ id, year, make, model, price }) => (
         <Card key={id} title={year + ' ' + make + ' ' + model + ' -> $'+ price}>
                 <div style={{ display: 'flex', justifyContent:'space-around'}}>
-                <EditOutlined />   
+                    <Link to={'/people'}>
+                        <EditOutlined />  
+                    </Link>
                 <DeleteOutlined />
             </div>
         </Card>
