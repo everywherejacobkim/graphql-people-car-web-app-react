@@ -34,8 +34,8 @@ export const GET_PEOPLE = gql`
 `;
 
 export const GET_CARS = gql`
-    query GetCar {
-        car {
+    query GetCars {
+        allCars {
         id
         year
         make
@@ -43,27 +43,16 @@ export const GET_CARS = gql`
         price
         personId
     }
+    ## car query does not work.so I map allCars instead ##
+    # car(personId: $id) {
+    #     id
+    #     year
+    #     make
+    #     model
+    #     price
+    # }
 }
 `;
-
-export const GET_PEOPLE_AND_CARS = gql`
-    query PeopleAndCars($personId: String!) {
-    people(id: $personId) {
-        id
-        firstName
-        lastName
-    }
-    car(id: $personId) {
-        id
-        year
-        make
-        model
-        price
-        personId
-    }
-    }
-`;
-
 
 export const ADD_PEOPLE = gql`
     mutation AddPeople($id: String!, $firstName: String!, $lastName: String!) {

@@ -2,12 +2,13 @@ import React, {useState, useEffect} from 'react';
 import { Form, Input, Button, Card, Cascader } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import { useMutation } from '@apollo/client';
-import { ADD_CAR } from '../../queries';
 import { CarOutlined } from '@ant-design/icons';
+import { ADD_CAR, GET_CARS } from '../../queries';
 
 const AddCar = () => {
 
-    const [id] = useState(uuidv4());
+    const [id, setId] = useState(uuidv4());
+    const [personId, setPersonId] = useState('')
     const [addCar] = useMutation(ADD_CAR);
 
     const [form] = Form.useForm();
@@ -18,13 +19,11 @@ const AddCar = () => {
     }, []);
 
     const onFinish = (values) => {
-        const {
-            year,
-            make,
-            model,
-            price,
-            personId
-        } = values;
+        setId(uuidv4());
+
+        const { make, model } = values;
+        const year = parseInt(values.year);
+        const price = parseFloat(values.price);
         
         addCar({
             variables: {
@@ -34,7 +33,11 @@ const AddCar = () => {
                 model,
                 price,
                 personId
-            }
+            }, 
+        update: (proxy, { data: { addCar } }) => {
+            const data = proxy.readQuery({ query: GET_CARS });
+            proxy.writeQuery({ query: GET_CARS, data: { ...data, allCars: [...data.allCars, addCar] } });
+        }
         })
     }
 

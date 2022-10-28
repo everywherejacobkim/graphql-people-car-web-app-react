@@ -1,5 +1,5 @@
 import { gql } from 'apollo-server-express';
-import { find, remove } from 'lodash';
+import { find, remove, filter } from 'lodash';
 
 const allPeople_data = [
     {
@@ -113,15 +113,16 @@ const typeDefs = gql`
     type Query {
         allPeople: [People]
         people(id: String): People
-    
+
         allCars: [Car]
         car(id: String): Car
+        carsByPersonId(personId: String!): [Car]
     }
 
     type Mutation {
         addPeople(id: String!, firstName: String!, lastName: String!): People,
         removePeople(id: String!): People,
-        updatePeople(id: String!, firstName: String, lastName: String): People,
+        updatePeople(firstName: String, lastName: String): People,
         
         addCar(id: String!, year: Int!, make: String!, model: String!, price: Float!, personId: String!): Car,
         removeCar(id: String!): Car,
@@ -138,7 +139,7 @@ const resolvers = {
         allCars: () => allCars_data,
         car(parent, args, context, info) {
             return find(allCars_data, { id: args.id })
-        },
+        }
     },
     Mutation: {
         addPeople: (root, args) => {
