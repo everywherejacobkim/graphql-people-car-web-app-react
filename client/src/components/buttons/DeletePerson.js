@@ -31,7 +31,7 @@ const DeletePerson = (props) => {
     return (
         <UserDeleteOutlined
             onClick={handleDelete}
-            style={{ fontSize: 24, marginTop: 10 }} />
+            style={{ fontSize: 24, marginTop: 21 }} />
     )
 }
 
