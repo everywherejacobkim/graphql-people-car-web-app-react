@@ -1,41 +1,76 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL_PEOPLE = gql`
-    query GetAllPeople {
+    {
         allPeople {
         id
         firstName
         lastName
+        }
     }
-}
 `;
 
 export const GET_ALL_CARS = gql`
-    query GetAllCars {
-        allCars {
-        id
-        year
-        make
-        model
-        price
-        personId
+    {
+            allCars {
+            id
+            year
+            make
+            model
+            price
+            personId
+        }
     }
-}
+`;
+
+export const GET_ALL_PEOPLE_AND_CARS = gql`
+    {
+        allPeople {
+            id
+            firstName
+            lastName
+        }
+        allCars {
+            id
+            year
+            make
+            model
+            price
+            personId
+        }
+    }
 `;
 
 export const GET_PEOPLE = gql`
-    query GetPeople {
+    {
         people {
         id
         firstName
         lastName
+        }
+    }
+`;
+
+export const GET_CARS = gql`
+    {
+        cars(personId: $id) {
+            id
+            year
+            make
+            model
+            price
     }
 }
 `;
 
-export const GET_CARS = gql`
-    query GetCars {
-        allCars {
+export const GET_PEOPLE_AND_CARS = gql`
+    query People($personId: String!) {
+    allPeople {
+        id
+        firstName
+        lastName
+    }
+    allCars {
         id
         year
         make
@@ -43,16 +78,14 @@ export const GET_CARS = gql`
         price
         personId
     }
-    ## car query does not work.so I map allCars instead ##
-    # car(personId: $id) {
-    #     id
-    #     year
-    #     make
-    #     model
-    #     price
-    # }
-}
+    people(id: $personId) {
+        id
+        firstName
+        lastName
+    }
+    }
 `;
+
 
 export const ADD_PEOPLE = gql`
     mutation AddPeople($id: String!, $firstName: String!, $lastName: String!) {

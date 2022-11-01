@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useMutation } from "@apollo/client";
 import { UPDATE_PEOPLE } from '../../queries';
 import { Form, Input, Button } from "antd";
-import { Link } from 'react-router-dom';
 
 const UpdatePerson = (props) => {
     const {id, firstName, lastName} = props
@@ -49,11 +48,6 @@ const UpdatePerson = (props) => {
                 Update Person
                 </Button>
             )}
-            </Form.Item>
-            <Form.Item>
-            <Link to={'/'}>
-                <Button type="primary">Back</Button>
-            </Link>
             </Form.Item>
         </Form>
     )
