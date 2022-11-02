@@ -19,7 +19,7 @@ export const GET_ALL_PEOPLE_AND_CARS = gql`
 `;
 
 export const GET_PEOPLE = gql`
-     query People($personId: String!){
+    query People($personId: String!){
         people(id: $personId) {
         id
         firstName

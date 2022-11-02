@@ -16,7 +16,7 @@ const AddPerson = () => {
 
     useEffect(() => {
         forceUpdate({});
-    }, [addPeople]);
+    }, []);
 
     const onFinish = (values) => {
         const { firstName, lastName } = values;
@@ -28,9 +28,9 @@ const AddPerson = () => {
                 firstName,
                 lastName
             },
-            update: (proxy, { data: { addPerson } }) => {
-                const data = proxy.readQuery({ query: GET_PEOPLE });
-                proxy.writeQuery({ query: GET_PEOPLE, data: { ...data, people: [...data.people, addPerson] } });
+            update: (cache, { data: { addPerson } }) => {
+                const data = cache.readQuery({ query: GET_PEOPLE });
+                cache.writeQuery({ query: GET_PEOPLE, data: { ...data, people: [...data.people, addPerson] } });
             }
         })
     }

@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import { Form, Input, Button, Card, Cascader } from 'antd';
+import { Form, Input, Button, Card, Select } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import { useMutation } from '@apollo/client';
 import { CarOutlined } from '@ant-design/icons';
-import { ADD_CAR, GET_CARS } from '../../queries';
+import { ADD_CAR, GET_CARS, GET_ALL_PEOPLE_AND_CARS } from '../../queries';
+import { useQuery } from "@apollo/client";
 
 const AddCar = () => {
 
@@ -18,13 +19,12 @@ const AddCar = () => {
         forceUpdate({});
     }, []);
 
-    const onFinish = (values) => {
-        setId(uuidv4());
-
+    const onFinish = values => {
         const { make, model } = values;
         const year = parseInt(values.year);
         const price = parseFloat(values.price);
-        
+        setId(uuidv4());
+
         addCar({
             variables: {
                 id,
@@ -34,27 +34,16 @@ const AddCar = () => {
                 price,
                 personId
             }, 
-        update: (proxy, { data: { addCar } }) => {
-            const data = proxy.readQuery({ query: GET_CARS });
-            proxy.writeQuery({ query: GET_CARS, data: { ...data, allCars: [...data.allCars, addCar] } });
+        update: (cache, { data: { addCar } }) => {
+            const data = cache.readQuery({ query: GET_CARS });
+            cache.writeQuery({ query: GET_CARS, data: { ...data, allCars: [...data.allCars, addCar] } });
         }
         })
     }
 
-    const options = [
-        {
-            value: '1',
-            label: '1',
-        },
-        {
-            value: '2',
-            label: '2',
-        },
-        {
-            value: '3',
-            label: '3',
-        },
-    ]
+    const { loading, error, data } = useQuery(GET_ALL_PEOPLE_AND_CARS);
+    if (loading) return "Loading...";
+    if (error) return `Error! ${error.message}`;
 
     const formStyles = () => ({
         flex: {
@@ -83,8 +72,14 @@ const AddCar = () => {
                         <Input placeholder='30000'/>
                     </Form.Item>
                 </div>
-                <Form.Item name="personId" label="Person ID" rules={[{ required: true, message: "Please input the make of your car"}]}>
-                    <Cascader options={options} placeholder="Please select" />
+                <Form.Item name="personId" label="Person ID" rules={[{ required: true, message: "Please select owner id of the car"}]}>
+                    <Select placeholder="Please select" onChange={(value) => setPersonId(value)}>
+                        {data.allPeople.map((people) => (
+                            <Select.Option key={people.id} value={people.id}>
+                                {people.id}    
+                            </Select.Option>
+                        ))}
+                    </Select>
                 </Form.Item>
                     <Form.Item shouldUpdate={true} wrapperCol={{ offset: 8, span: 16 }}>
                         {() => (

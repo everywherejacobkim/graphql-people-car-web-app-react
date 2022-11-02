@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_PEOPLE_AND_CARS } from '../../queries';
 import { Card, Collapse, Button } from 'antd';
@@ -31,7 +31,7 @@ const PersonCard = () => {
           <DeletePerson id={id} firstName={firstName} lastName={lastName} />
           <Collapse bordered={false} defaultActiveKey={['1']} style={{background: 'none'}}>
             <Panel showArrow={false} header={<EditPerson />}>
-              <UpdatePerson />
+              <UpdatePerson id={id} firstName={firstName} lastName={lastName} />
             </Panel>
           </Collapse>
         </div>
