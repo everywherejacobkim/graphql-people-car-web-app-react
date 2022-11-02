@@ -111,12 +111,10 @@ const typeDefs = gql`
     }
 
     type Query {
-        allPeople: [People]
         people(id: String!): People
-
-        allCars: [Car]
+        allPeople: [People]
         car(id: String!): Car
-        # carsByPersonId(personId: String!): [Car]
+        allCars: [Car]
     }
 
     type Mutation {

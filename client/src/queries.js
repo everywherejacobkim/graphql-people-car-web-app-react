@@ -1,28 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const GET_ALL_PEOPLE = gql`
-    {
-        allPeople {
-        id
-        firstName
-        lastName
-        }
-    }
-`;
-
-export const GET_ALL_CARS = gql`
-    {
-            allCars {
-            id
-            year
-            make
-            model
-            price
-            personId
-        }
-    }
-`;
-
 export const GET_ALL_PEOPLE_AND_CARS = gql`
     {
         allPeople {
@@ -42,8 +19,8 @@ export const GET_ALL_PEOPLE_AND_CARS = gql`
 `;
 
 export const GET_PEOPLE = gql`
-    {
-        people {
+     query People($personId: String!){
+        people(id: $personId) {
         id
         firstName
         lastName
@@ -52,8 +29,8 @@ export const GET_PEOPLE = gql`
 `;
 
 export const GET_CARS = gql`
-    {
-        cars(personId: $id) {
+    query Cars($personId: String!){
+        car(id: $personId) {
             id
             year
             make
@@ -63,27 +40,22 @@ export const GET_CARS = gql`
 }
 `;
 
-export const GET_PEOPLE_AND_CARS = gql`
-    query People($personId: String!) {
-    allPeople {
-        id
-        firstName
-        lastName
-    }
-    allCars {
-        id
-        year
-        make
-        model
-        price
-        personId
-    }
-    people(id: $personId) {
-        id
-        firstName
-        lastName
-    }
-    }
+export const GET_PEOPLE_WITH_CARS = gql`
+    query PeopleWithCars($personId: String!) {
+        people(id: $personId) {
+            id
+            firstName
+            lastName
+        }
+        allCars {
+            id
+            year
+            make
+            model
+            price
+            personId
+        }
+}
 `;
 
 

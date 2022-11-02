@@ -16,7 +16,7 @@ const AddPerson = () => {
 
     useEffect(() => {
         forceUpdate({});
-    }, []);
+    }, [addPeople]);
 
     const onFinish = (values) => {
         const { firstName, lastName } = values;

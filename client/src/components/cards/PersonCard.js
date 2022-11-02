@@ -1,11 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_ALL_PEOPLE_AND_CARS } from '../../queries';
-import { Card, Collapse } from 'antd';
+import { Card, Collapse, Button } from 'antd';
 import CarCard from './CarCard';
 import DeletePerson from '../buttons/DeletePerson';
 import EditPerson from '../buttons/EditPerson';
 import UpdatePerson from '../form/UpdatePerson';
+import { Link } from 'react-router-dom';
 
 
 const PersonCard = () => {
@@ -35,7 +36,12 @@ const PersonCard = () => {
           </Collapse>
         </div>
         }>
-        <CarCard ownCars={ownCars}/>
+        <CarCard ownCars={ownCars} />
+        <Link to={`/people/${id}`}>
+          <Button type="link" style={{marginTop: 5}}>
+            Learn More
+          </Button>
+        </Link>
       </Card>
       ))
   )
